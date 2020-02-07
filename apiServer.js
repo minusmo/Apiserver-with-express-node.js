@@ -47,6 +47,7 @@ server.use(bodyParser.urlencoded({ extended: true }));
 server.use(bodyParser.json());
 
 server.get("/", function(req, res) {
+  res.set("Access-Control-Allow-Origin", "*");
   artistsModel
     .find({})
     .exec()
