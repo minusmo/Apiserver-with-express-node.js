@@ -6,7 +6,7 @@ const bodyParser = require("body-parser");
 
 const artistsModel = require("./Schema");
 
-const port = process.env.port || 3040;
+const port = process.env.PORT || 3040;
 
 const atlasUri =
   "mongodb+srv://superuser:on8SkrvCS4Ps5jCs@clusterone-svz1y.gcp.mongodb.net/musicapp?retryWrites=true&w=majority";
