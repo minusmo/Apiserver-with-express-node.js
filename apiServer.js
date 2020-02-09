@@ -3,6 +3,10 @@ const mongoose = require("mongoose");
 const mongodb = require("mongodb");
 const assert = require("assert");
 const bodyParser = require("body-parser");
+const fs = require("fs");
+
+const jsonAlbumFile = fs.readFileSync("./json/allAlbumsData.json");
+const jsonAlbumObj = JSON.parse(jsonAlbumFile);
 
 const artistsModel = require("./Schema");
 
@@ -46,7 +50,7 @@ const server = express();
 server.use(bodyParser.urlencoded({ extended: true }));
 server.use(bodyParser.json());
 
-server.get("/", function(req, res) {
+server.get("/artistData", function(req, res) {
   res.set("Access-Control-Allow-Origin", "*");
   artistsModel
     .find({})
@@ -58,6 +62,10 @@ server.get("/", function(req, res) {
     .catch(err => {
       console.log(err);
     });
+});
+
+server.get("/albumsData", function(req, res) {
+  res.json(jsonAlbumObj);
 });
 
 server.listen(port, () => {
