@@ -65,6 +65,7 @@ server.get("/artistData", function(req, res) {
 });
 
 server.get("/albumsData", function(req, res) {
+  res.set("Access-Control-Allow-Origin", "*");
   res.json(jsonAlbumObj);
 });
 
