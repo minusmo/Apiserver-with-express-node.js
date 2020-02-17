@@ -50,23 +50,36 @@ const server = express();
 server.use(bodyParser.urlencoded({ extended: true }));
 server.use(bodyParser.json());
 
-server.get("/artistData", function(req, res) {
-  res.set("Access-Control-Allow-Origin", "*");
-  artistsModel
-    .find({})
-    .exec()
-    .then(doc => {
-      console.log(doc);
-      res.json(doc);
-    })
-    .catch(err => {
-      console.log(err);
-    });
+server.postg("/artistData/:id", function(req, res) {
+  if (req.params.id === "mo9508") {
+    res.set("Access-Control-Allow-Origin", "*");
+    artistsModel
+      .find({})
+      .exec()
+      .then(doc => {
+        console.log(doc);
+        res.json(doc);
+      })
+      .catch(err => {
+        console.log(err);
+      });
+  } else {
+    res.send("you are no allowed!");
+  }
 });
 
-server.get("/albumsData", function(req, res) {
-  res.set("Access-Control-Allow-Origin", "*");
-  res.json(jsonAlbumObj);
+// server.get("/albumsData", function(req, res) {
+//   res.set("Access-Control-Allow-Origin", "*");
+//   res.json(jsonAlbumObj);
+// });
+
+server.post("/albumsData/:id", function(req, res) {
+  if (req.params.id === "mo9508") {
+    res.set("Access-Control-Allow-Origin", "*");
+    res.json(jsonAlbumObj);
+  } else {
+    res.send("you are now allowed!");
+  }
 });
 
 server.listen(port, () => {
