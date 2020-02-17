@@ -50,7 +50,15 @@ const server = express();
 server.use(bodyParser.urlencoded({ extended: true }));
 server.use(bodyParser.json());
 
-server.postg("/artistData/:id", function(req, res) {
+server.use("/albumsData", (req, res, next) => {
+  next();
+});
+
+server.use("/artistData", (req, res, next) => {
+  next();
+});
+
+server.post("/artistData/:id", function(req, res) {
   if (req.params.id === "mo9508") {
     res.set("Access-Control-Allow-Origin", "*");
     artistsModel
