@@ -8,7 +8,7 @@ const fs = require("fs");
 const jsonAlbumFile = fs.readFileSync("./json/allAlbumsData.json");
 const jsonAlbumObj = JSON.parse(jsonAlbumFile);
 
-const artistsModel = require("./Schema");
+const { artistsModel, calendarModel } = require("./Schema");
 
 const port = process.env.PORT || 3040;
 
@@ -25,26 +25,6 @@ db.once("open", function() {
   console.log("connected!");
 });
 
-// const testSchema = mongoose.Schema(
-//   {
-//     _id: mongoose.Types.ObjectId,
-//     name: String,
-//     age: Number
-//   },
-//   { collection: "testCol" }
-// );
-// const testModel = mongoose.model("test", testSchema);
-
-// testModel
-//   .find({})
-//   .exec()
-//   .then(doc => {
-//     console.log(doc);
-//   })
-//   .catch(err => {
-//     console.log(err);
-//   });
-
 const server = express();
 
 server.use(bodyParser.urlencoded({ extended: true }));
@@ -55,6 +35,10 @@ server.use("/albumsData", (req, res, next) => {
 });
 
 server.use("/artistData", (req, res, next) => {
+  next();
+});
+
+server.use("/timelineData", (req, res, next) => {
   next();
 });
 
@@ -87,6 +71,19 @@ server.post("/albumsData/:id", function(req, res) {
     res.json(jsonAlbumObj);
   } else {
     res.send("you are now allowed!");
+  }
+});
+
+server.post("/timelineData/:id", function(req, res) {
+  if (req.params.id === "mo9508") {
+    res.set("Access-Control-Allow-Origin", "*");
+    calendarModel.find({ artist: "younha" }, (err, docs) => {
+      if (err) throw err;
+
+      res.json(docs);
+    });
+  } else {
+    res.send("you are no allowed!");
   }
 });
 

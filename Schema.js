@@ -21,4 +21,15 @@ const artistsSchema = new Schema({
 });
 const artistsModel = mongoose.model("artist", artistsSchema);
 
-module.exports = artistsModel;
+// const monthSchema = new Schema({ title: String, date: String });
+
+const calendarSchema = new Schema({
+  // _id: mongoose.Schema.Types.ObjectId,
+  artist: String,
+  year: String,
+  month: [{ title: String, date: String, imgsrc: String, videosrc: String }]
+});
+
+const calendarModel = mongoose.model("calendar", calendarSchema);
+
+module.exports = { artistsModel, calendarModel };
