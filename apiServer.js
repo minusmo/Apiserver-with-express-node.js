@@ -74,14 +74,17 @@ server.post("/albumsData/:id", function(req, res) {
   }
 });
 
-server.post("/timelineData/:id", function(req, res) {
+server.post("/timelineData/:year/:id", function(req, res) {
   if (req.params.id === "mo9508") {
     res.set("Access-Control-Allow-Origin", "*");
-    calendarModel.find({ artist: "younha" }, (err, docs) => {
-      if (err) throw err;
+    calendarModel.find(
+      { artist: "younha", year: req.params.year },
+      (err, docs) => {
+        if (err) throw err;
 
-      res.json(docs);
-    });
+        res.json(docs);
+      }
+    );
   } else {
     res.send("you are no allowed!");
   }
