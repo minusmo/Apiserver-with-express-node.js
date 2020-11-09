@@ -4,11 +4,15 @@ const mongodb = require("mongodb");
 const assert = require("assert");
 const bodyParser = require("body-parser");
 const fs = require("fs");
+const multer = require('multer');
+const upload = multer({ dest: 'uploads/'});
 
 const jsonAlbumFile = fs.readFileSync("./json/allAlbumsData.json");
 const jsonAlbumObj = JSON.parse(jsonAlbumFile);
 
 const { artistsModel, calendarModel } = require("./Schema");
+const { MulterError } = require("multer");
+const { RSA_NO_PADDING } = require("constants");
 
 const port = process.env.PORT || 3040;
 
@@ -86,9 +90,17 @@ server.post("/timelineData/:year/:id", function(req, res) {
       }
     );
   } else {
-    res.send("you are no allowed!");
+    res.send("you are not allowed!");
   }
 });
+
+server.post('/upload', upload.single('imgFileData1'), function(req, res, next) {
+  res.set("Access-Control-Allow-Origin", "*");
+  res.send(req.body);
+  res.send(req.file);
+  res.send(req.headers);
+  res.end();
+})
 
 server.listen(port, () => {
   console.log("Now listening on " + port);
