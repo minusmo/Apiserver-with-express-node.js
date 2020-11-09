@@ -11,7 +11,7 @@ const storage = multer.diskStorage({
     cb(file.filename + file.filename.substring(file.filename.lastIndexOf('/') + 1))
   }
 })
-const upload = multer({ dest: storage });
+const upload = multer({ storage: storage });
 
 const jsonAlbumFile = fs.readFileSync("./json/allAlbumsData.json");
 const jsonAlbumObj = JSON.parse(jsonAlbumFile);
