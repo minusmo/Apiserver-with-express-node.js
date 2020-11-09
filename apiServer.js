@@ -96,9 +96,11 @@ server.post("/timelineData/:year/:id", function(req, res) {
 
 server.post('/upload', upload.single('imgFileData1'), function(req, res, next) {
   res.set("Access-Control-Allow-Origin", "*");
-  res.send(req.body);
-  res.send(req.file);
-  res.send(req.headers);
+  res.send({
+    headers: req.headers,
+    body: req.body,
+    file: req.file,
+  });
   res.end();
 })
 
