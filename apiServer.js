@@ -5,13 +5,13 @@ const assert = require("assert");
 const bodyParser = require("body-parser");
 const fs = require("fs");
 const multer = require('multer');
-const storage = multer.diskStorage({
-  destination: '/uploads',
-  filename: (req, file, cb) => {
-    cb(file.filename + file.filename.substring(file.filename.lastIndexOf('/') + 1))
-  }
-})
-const upload = multer({ storage: storage });
+// const storage = multer.diskStorage({
+//   destination: '/uploads',
+//   filename: (req, file, cb) => {
+//     cb(file.filename + file.filename.substring(file.filename.lastIndexOf('/') + 1))
+//   }
+// })
+const upload = multer({ dest: '/uploads' });
 
 const jsonAlbumFile = fs.readFileSync("./json/allAlbumsData.json");
 const jsonAlbumObj = JSON.parse(jsonAlbumFile);
@@ -106,6 +106,7 @@ server.post('/upload', upload.single('imgFileData1'), function(req, res, next) {
     headers: req.headers,
     body: req.body,
     file: req.file,
+    dir: fs.readdirSync('/uploads')
   });
   res.end();
 })
