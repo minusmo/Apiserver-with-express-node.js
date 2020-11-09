@@ -5,7 +5,13 @@ const assert = require("assert");
 const bodyParser = require("body-parser");
 const fs = require("fs");
 const multer = require('multer');
-const upload = multer({ dest: '/uploads'});
+const storage = multer.diskStorage({
+  destination: '/uploads',
+  filename: (req, file, cb) => {
+    cb(file.filename + file.filename.substring(file.filename.lastIndexOf('/') + 1))
+  }
+})
+const upload = multer({ dest: storage });
 
 const jsonAlbumFile = fs.readFileSync("./json/allAlbumsData.json");
 const jsonAlbumObj = JSON.parse(jsonAlbumFile);
