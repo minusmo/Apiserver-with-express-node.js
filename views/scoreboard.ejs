@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>scoreboard</title>
+    <style>
+        #scoreboard {
+            text-align: center;
+        }
+
+        ol {
+            text-align: start;
+        }
+    </style>
+</head>
+<body>
+    <div id="scoreboard">
+        <h3>실시간 순위</h3>
+        <ol>
+            <% for (let aPair of sortedScores.values()) { %>
+                <li>ID: <%= aPair[0] %> - 점수: <%= aPair[1] %></li>
+            <% } %>
+        </ol>
+    </div>
+</body>
+</html>

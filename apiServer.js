@@ -4,6 +4,8 @@ const mongodb = require("mongodb");
 const assert = require("assert");
 const bodyParser = require("body-parser");
 const fs = require("fs");
+const path = require('path');
+const { expressCspHeader, NONE, SELF, NONCE, INLINE } = require('express-csp-header');
 const multer = require('multer');
 // const storage = multer.diskStorage({
 //   destination: '/uploads',
@@ -19,6 +21,7 @@ const jsonAlbumObj = JSON.parse(jsonAlbumFile);
 const { artistsModel, calendarModel } = require("./Schema");
 const { MulterError } = require("multer");
 const { RSA_NO_PADDING } = require("constants");
+const { nextTick } = require("process");
 
 const port = process.env.PORT || 3040;
 
@@ -39,6 +42,15 @@ const server = express();
 
 server.use(bodyParser.urlencoded({ extended: true }));
 server.use(bodyParser.json());
+server.use(expressCspHeader({
+  directives: {
+      'default-src': [SELF],
+      'img-src': [SELF],
+      'script-src': [SELF, 'https://*', 'http://*'],
+      'style-src': [INLINE],
+  }
+}));
+server.use(express.static(__dirname + '/ggu'));
 
 server.use("/albumsData", (req, res, next) => {
   next();
@@ -51,6 +63,11 @@ server.use("/artistData", (req, res, next) => {
 server.use("/timelineData", (req, res, next) => {
   next();
 });
+
+server.set('view engine', 'ejs');
+server.engine('ejs', require('ejs').renderFile);
+
+// server.set('views', __dirname + '/GGU');
 
 server.post("/artistData/:id", function(req, res) {
   if (req.params.id === "mo9508") {
@@ -111,6 +128,44 @@ server.post('/upload', upload.single('imgFileData1'), function(req, res, next) {
   res.end();
 })
 
+server.get('/ggu', (req, res) => {
+  const options = {
+    headers: { "Access-Control-Allow-Origin": "*" }
+  }
+  
+  res.render('gguggu');
+  res.end();
+})
+
+server.get('/scoreboard', (req, res) => {
+  const jsonScore = fs.readFileSync('./json/scores.json');
+  const scoreObj = JSON.parse(jsonScore);
+  // 값 기준 정렬
+  const scoreArr = [];
+  for(let key in scoreObj) {
+    scoreArr.push([key, scoreObj[key]]);
+  }
+  scoreArr.sort((a,b) => b[1] - a[1]);
+  const params = { sortedScores: scoreArr };
+
+  res.render('scoreboard', params);
+  res.end();
+})
+
+server.post('/updatescore/:id/:score', (req, res) => {
+  res.set("Access-Control-Allow-Origin", "*");
+  const { id, score } = req.params;
+  const jsonScore = fs.readFileSync('./json/scores.json');
+  const scoreObj = JSON.parse(jsonScore);
+
+  scoreObj[id] = score;
+
+  fs.writeFileSync('./json/scores.json', JSON.stringify(scoreObj));
+  res.send('scoreboard updated!');
+  res.end();
+})
+
 server.listen(port, () => {
   console.log("Now listening on " + port);
+  // console.log(__dirname);
 });
