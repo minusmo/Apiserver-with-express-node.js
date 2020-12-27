@@ -161,7 +161,7 @@ server.post('/updatescore/:id/:score', (req, res) => {
   if (!scoreObj[id]) {
     scoreObj[id] = score;
   }
-  else if (score >= scoreObj[id]) {
+  else if (Number(score) >= Number(scoreObj[id])) {
     scoreObj[id] = score;
   }
 

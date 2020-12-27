@@ -167,7 +167,7 @@ class GGU {
 
         const airHighBar = new Konva.Rect({
             x: this.stageWidth,
-            y: 200,
+            y: 150,
             width: 30,
             height: 10,
             fill: 'black',
@@ -245,9 +245,9 @@ class GGU {
         const airhighbarmove = new Konva.Tween({
             node: airHighBar,
             x: 0,
-            y: 200,
+            y: 240,
             duration: 3,
-            easing: Konva.Easings.ElasticEaseInOut,
+            easing: Konva.Easings.StrongEaseInOut,
             onFinish: () => {
                 this.gameObjects.airHighBar.hide();
                 // littleBar.remove();
@@ -257,7 +257,7 @@ class GGU {
                     if(this.gameState.isPlaying) {
                         this.tweens.airhighbarmove.play();
                     }
-                }, 800);
+                }, 1000);
             }
         });
         
@@ -265,8 +265,8 @@ class GGU {
             node: airLowBar,
             x: 0,
             y: 220,
-            duration: 1.5,
-            easing: Konva.Easings.ElasticEaseIn,
+            duration: 2,
+            easing: Konva.Easings.BounceEaseIn,
             onFinish: () => {
                 this.gameObjects.airLowBar.hide();
                 // littleBar.remove();
@@ -276,7 +276,7 @@ class GGU {
                     if(this.gameState.isPlaying) {
                         this.tweens.airlowbarmove.play();
                     }
-                }, 700);
+                }, 1000);
             }
         });
 
