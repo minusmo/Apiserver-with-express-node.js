@@ -158,7 +158,12 @@ server.post('/updatescore/:id/:score', (req, res) => {
   const jsonScore = fs.readFileSync('./json/scores.json');
   const scoreObj = JSON.parse(jsonScore);
 
-  scoreObj[id] = score;
+  if (!scoreObj[id]) {
+    scoreObj[id] = score;
+  }
+  else if (score >= scoreObj[id]) {
+    scoreObj[id] = score;
+  }
 
   fs.writeFileSync('./json/scores.json', JSON.stringify(scoreObj));
   res.send('scoreboard updated!');
