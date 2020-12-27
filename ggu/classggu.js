@@ -245,7 +245,7 @@ class GGU {
         const airhighbarmove = new Konva.Tween({
             node: airHighBar,
             x: 0,
-            y: 240,
+            y: 290,
             duration: 3,
             easing: Konva.Easings.StrongEaseInOut,
             onFinish: () => {

@@ -5,3 +5,5 @@ npm-debug.log
 /*.env
 
 Procfile
+
+/json/scores.json
